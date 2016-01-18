@@ -13,9 +13,17 @@
 module Haddock.Backends.Xhtml.Layout (
   miniBody,
 
-  divPackageHeader, divContent, divModuleHeader, divFooter,
-  divTableOfContents, divDescription, divSynopsis, divInterface,
-  divIndex, divAlphabet, divModuleList,
+  divPackageHeader,
+  divModuleHeader,
+  divModuleInfo,
+  divTableOfContents,
+  divDescription,
+  divSynposis,
+  divInterface,
+  divIndex,
+  divAlphabet,
+  divModuleList,
+  divFooter,
 
   sectionName,
   nonEmptySectionName,
@@ -60,7 +68,7 @@ miniBody = body ! [identifier "mini"]
 
 
 sectionDiv :: String -> Html -> Html
-sectionDiv i = thediv ! [identifier i]
+sectionDiv i = thediv ! [theclass "section", identifier i]
 
 
 sectionName :: Html -> Html
@@ -75,23 +83,22 @@ nonEmptySectionName c
   | otherwise  = paragraph ! [theclass "caption"]       $ c
 
 
-divPackageHeader, divContent, divModuleHeader, divFooter,
-  divTableOfContents, divDescription, divSynopsis, divInterface,
+divPackageHeader, divModuleHeader, divModuleInfo, divFooter,
+  divTableOfContents, divDescription, divSynposis, divInterface,
   divIndex, divAlphabet, divModuleList
     :: Html -> Html
 
-divPackageHeader    = sectionDiv "package-header"
-divContent          = sectionDiv "content"
-divModuleHeader     = sectionDiv "module-header"
-divFooter           = sectionDiv "footer"
-divTableOfContents  = sectionDiv "table-of-contents"
-divDescription      = sectionDiv "description"
-divSynopsis         = sectionDiv "synopsis"
-divInterface        = sectionDiv "interface"
-divIndex            = sectionDiv "index"
-divAlphabet         = sectionDiv "alphabet"
-divModuleList       = sectionDiv "module-list"
-
+divPackageHeader   = sectionDiv "package-header"
+divModuleHeader    = sectionDiv "module-header"
+divModuleInfo      = sectionDiv "module-info"
+divTableOfContents = sectionDiv "table-of-contents"
+divDescription     = sectionDiv "description"
+divSynposis        = sectionDiv "synopsis"
+divInterface       = sectionDiv "interface"
+divIndex           = sectionDiv "index"
+divAlphabet        = sectionDiv "alphabet"
+divModuleList      = sectionDiv "module-list"
+divFooter          = sectionDiv "footer"
 
 --------------------------------------------------------------------------------
 -- * Declaration containers

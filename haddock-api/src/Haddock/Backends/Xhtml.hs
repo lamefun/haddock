@@ -32,6 +32,7 @@ import Haddock.Types
 import Haddock.Version
 import Haddock.Utils
 import Text.XHtml hiding ( name, title, p, quote )
+import qualified Text.XHtml as XHtml
 import Haddock.GhcUtils
 
 import Control.Monad         ( when, unless )
@@ -111,6 +112,8 @@ headHtml :: String -> Maybe String -> Themes -> Html
 headHtml docTitle miniPage themes =
   header << [
     meta ! [httpequiv "Content-Type", content "text/html; charset=UTF-8"],
+    meta ! [XHtml.name "viewport",
+            content "width=device-width, initial-scale=1.0"],
     thetitle << docTitle,
     styleSheet themes,
     script ! [src jsFile, thetype "text/javascript"] << noHtml,
@@ -164,11 +167,11 @@ indexButton maybe_index_url
 bodyHtml :: String -> Maybe Interface
     -> SourceURLs -> WikiURLs
     -> Maybe String -> Maybe String
-    -> Html -> Html
+    -> Bool -> Html -> Html
 bodyHtml doctitle iface
            maybe_source_url maybe_wiki_url
            maybe_contents_url maybe_index_url
-           pageContent =
+           hasSidebar pageContent =
   body << [
     divPackageHeader << [
       unordList (catMaybes [
@@ -179,13 +182,15 @@ bodyHtml doctitle iface
             ! [theclass "links", identifier "page-menu"],
       nonEmptySectionName << doctitle
       ],
-    divContent << pageContent,
+    thediv ! ([identifier "content"] ++ hasSidebarClass) << pageContent,
     divFooter << paragraph << (
       "Produced by " +++
       (anchor ! [href projectUrl] << toHtml projectName) +++
       (" version " ++ projectVersion)
       )
     ]
+  where
+    hasSidebarClass = if hasSidebar then [theclass "has-sidebar"] else []
 
 
 moduleInfo :: Interface -> Html
@@ -257,7 +262,7 @@ ppHtmlContents dflags odir doctitle _maybe_package
         headHtml doctitle Nothing themes +++
         bodyHtml doctitle Nothing
           maybe_source_url maybe_wiki_url
-          Nothing maybe_index_url << [
+          Nothing maybe_index_url False << [
             ppPrologue qual doctitle prologue,
             ppModuleTree qual tree
           ]
@@ -311,7 +316,11 @@ mkNode qual ss p (Node s leaf pkg srcPkg short ts) =
 
     mdl = intercalate "." (reverse (s:ss))
 
-    shortDescr = maybe noHtml (origDocToHtml qual) short
+    shortDescr =
+      case short of
+        Just s -> (thespan ! [theclass "short-descr"]) (origDocToHtml qual s)
+        Nothing -> noHtml
+
     htmlPkg = maybe noHtml (thespan ! [theclass "package"] <<) srcPkg
 
     subtree = mkNodeList qual (s:ss) p ts ! collapseSection p True ""
@@ -386,10 +395,11 @@ ppHtmlIndex odir doctitle _maybe_package themes
       headHtml (doctitle ++ " (" ++ indexName ch ++ ")") Nothing themes +++
       bodyHtml doctitle Nothing
         maybe_source_url maybe_wiki_url
-        maybe_contents_url Nothing << [
+        maybe_contents_url Nothing False << [
           if showLetters then indexInitialLetterLinks else noHtml,
-          if null items then noHtml else
-            divIndex << [sectionName << indexName ch, buildIndex items]
+          if null items
+            then divIndex << [XHtml.p ! [theclass "no-items"] $ toHtml "Select a letter."]
+            else divIndex << [sectionName << indexName ch, buildIndex items]
           ]
 
     indexName ch = "Index" ++ maybe "" (\c -> " - " ++ [c]) ch
@@ -494,12 +504,16 @@ ppHtmlModule odir doctitle themes
       aliases = ifaceModuleAliases iface
       mdl_str = moduleString mdl
       real_qual = makeModuleQual qual aliases mdl
+      exports = numberSectionHeadings (ifaceRnExportItems iface)
       html =
         headHtml mdl_str (Just $ "mini_" ++ moduleHtmlFile mdl) themes +++
         bodyHtml doctitle (Just iface)
           maybe_source_url maybe_wiki_url
-          maybe_contents_url maybe_index_url << [
-            divModuleHeader << (moduleInfo iface +++ (sectionName << mdl_str)),
+          maybe_contents_url maybe_index_url True << [
+            h1 ! [theclass "module-name"] $ toHtml mdl_str,
+            thediv ! [identifier "sidebar"] << [
+              divModuleInfo (sectionName << "Information" +++ moduleInfo iface),
+              ppModuleContents real_qual exports],
             ifaceToHtml maybe_source_url maybe_wiki_url iface unicode real_qual
           ]
 
@@ -522,8 +536,7 @@ ppHtmlModuleMiniSynopsis odir _doctitle themes iface unicode qual debug = do
 
 ifaceToHtml :: SourceURLs -> WikiURLs -> Interface -> Bool -> Qualification -> Html
 ifaceToHtml maybe_source_url maybe_wiki_url iface unicode qual
-  = ppModuleContents qual exports +++
-    description +++
+  = description +++
     synopsis +++
     divInterface (maybe_doc_hdr +++ bdy)
   where
@@ -546,7 +559,7 @@ ifaceToHtml maybe_source_url maybe_wiki_url iface unicode qual
     synopsis
       | no_doc_at_all = noHtml
       | otherwise
-      = divSynopsis $
+      = divSynposis $
             paragraph ! collapseControl "syn" False "caption" << "Synopsis" +++
             shortDeclList (
                 mapMaybe (processExport True linksInfo unicode qual) exports

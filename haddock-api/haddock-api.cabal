@@ -31,6 +31,14 @@ data-files:
   html/Ocean.std-theme/ocean.css
   html/Ocean.std-theme/plus.gif
   html/Ocean.std-theme/synopsis.png
+  html/Purity.std-theme/FontAwesome.ttf
+  html/Purity.std-theme/Haskell.ttf
+  html/Purity.std-theme/LICENSE.txt
+  html/Purity.std-theme/OpenSans-Bold.ttf
+  html/Purity.std-theme/OpenSans-BoldItalic.ttf
+  html/Purity.std-theme/OpenSans-Italic.ttf
+  html/Purity.std-theme/OpenSans-Regular.ttf
+  html/Purity.std-theme/purity.css
   latex/haddock.sty
 
 library
