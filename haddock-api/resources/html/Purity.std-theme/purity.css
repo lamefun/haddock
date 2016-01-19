@@ -118,21 +118,15 @@ a { text-decoration: none; }
 
 a[href]:link,
 #footer a:visited {
-  color: #428bca;
+  color: rgb(196,69,29);
   text-decoration: none
 }
 
-a[href]:visited { color: #992299; }
+a[href]:visited { color: rgb(171,105,84); }
 
 a[href]:hover,
 a[href]:focus {
-  color: #2a6496;
   text-decoration: underline;
-}
-
-a[href]:visited:hover,
-a[href]:visited:focus {
-  color: #661166;
 }
 
 a[href]:focus {
@@ -301,7 +295,7 @@ body.has-javascript .collapser-target.collapsed {
 /*----------------------------------------------------------------------------*/
 
 pre, code, tt {
-  color: #333;
+  color: #22272a;
   hyphens: none;
 }
 
@@ -312,15 +306,15 @@ pre, #synopsis > ul {
   padding-bottom: 10px;
   margin-top: 15px;
   margin-bottom: 15px;
-  border-left: 6px solid #e5e5f6;
+  border-left: 6px solid #CFE2F2;
   overflow: auto;
   line-height: 140%;
-  background-color: #f3f3f9;
+  background: rgb(229,237,244);
   position: relative;
 }
 
 code, tt {
-  background: #f2f2f9;
+  background: rgb(229,237,244);
   padding: 2px 4px
 }
 
@@ -987,7 +981,7 @@ table.info {
   }
 }
 
-@media all and (min-width: 740px) and (max-width: 1200px) {
+@media all and (min-width: 740px) and (max-width: 1199px) {
   #content {
     width: 100%;
     max-width: 700px;
@@ -1047,12 +1041,13 @@ table.info {
   }
 
   #module-prologue {
-    background: #f6f6f6;
+    background: #faf9dc;
+    border: 1px solid #d8d7ad;
     padding-top: 10px;
     padding-right: 30px;
     padding-left: 30px;
     padding-bottom: 20px;
-    width: 280px;
+    width: 278px;
     position: absolute;
     right: 0;
     top: 0;
