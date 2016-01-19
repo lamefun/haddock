@@ -961,14 +961,14 @@ table.info {
   }
 }
 
-@media all and (max-width: 840px) {
+@media all and (max-width: 780px) {
   #content {
     margin-left: 15px;
     margin-right: 15px;
   }
 }
 
-@media all and (min-width: 840px) {
+@media all and (min-width: 780px) {
   #content {
     margin-left: auto;
     margin-right: auto;
@@ -990,10 +990,10 @@ table.info {
   }
 }
 
-@media all and (min-width: 840px) and (max-width: 1239px) {
+@media all and (min-width: 780px) and (max-width: 1239px) {
   #content {
     width: 100%;
-    max-width: 800px;
+    max-width: 740px;
   }
 
   #module-prologue {
@@ -1017,7 +1017,7 @@ table.info {
   }
 }
 
-@media all and (min-width: 800px) {
+@media all and (min-width: 840px) {
   .collapser:before {
     padding-right: 0;
     width: 0;
@@ -1028,7 +1028,7 @@ table.info {
 
 @media all and (min-width: 1240px) {
   #content.has-module-prologue {
-    width: 1170px;
+    width: 1110px;
     position: relative;
     padding-right: 370px;
   }
