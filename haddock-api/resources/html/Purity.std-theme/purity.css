@@ -156,28 +156,33 @@ body {
 
 /*----------------------------------------------------------------------------*/
 
+h1, h2, h3, h4, h5, h6,
+.section .caption {
+  color: #4E6272;
+}
+
 h1,
 #synopsis .caption,
 #module-list .caption,
 #index .caption,
 #description .caption {
   font-weight: normal;
-  font-size: 28px;
+  font-size: 25px;
 }
 
 h1.module-name {
-  font-size: 32px;
+  font-size: 30px;
 }
 
 h2,
 #table-of-contents .caption,
 #module-info .caption {
   font-weight: normal;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
 }
 
@@ -187,7 +192,7 @@ h4,
   font-weight: bold;
 }
 
-h5 {
+h5, h6 {
   font-weight: bold;
   font-style: italic;
 }
@@ -205,6 +210,7 @@ table {
 
 pre, code, kbd, samp, tt, .src {
   font-family: 'Ubuntu Mono', 'Liberation Mono', monospace;
+  line-height: 140%;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -276,14 +282,14 @@ body.has-javascript .collapser.collapsed:before {
 
 .collapser:before {
   font-family: 'FontAwesome';
+  font-weight: normal;
   display: inline-block;
-  font-size: 90%;
-  color: #aaa;
+  color: #777;
   padding-right: 0.25em;
 }
 
 .collapser:hover:before {
-  color: #666;
+  color: #333;
 }
 
 body.has-javascript .collapser-target.collapsed {
@@ -308,14 +314,13 @@ pre, #synopsis > ul {
   margin-bottom: 15px;
   border-left: 6px solid #CFE2F2;
   overflow: auto;
-  line-height: 140%;
   background: rgb(229,237,244);
   position: relative;
 }
 
 code, tt {
   background: rgb(229,237,244);
-  padding: 2px 4px
+  padding: 2px 2px
 }
 
 pre code, pre tt {
@@ -380,6 +385,7 @@ strong.userinput:before {
 #package-header .caption {
   display: block;
   margin: 0;
+  color: #ddd;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -450,12 +456,13 @@ strong.userinput:before {
   z-index: 1;
   overflow: visible;
   background: #fff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+  box-shadow: 0 1px 2px 1px rgba(0,0,0,0.2);
   margin: 0;
   padding: 0;
   text-align: center;
   right: 0em;
   top: 2em;
+  border-radius: 4px;
 }
 
 #style-menu ul {
@@ -467,6 +474,16 @@ strong.userinput:before {
   margin: 0;
   padding: 0;
   list-style-type: none;
+}
+
+#style-menu li:first-child a {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+#style-menu li:last-child a {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 #style-menu a {
@@ -528,7 +545,7 @@ table.info {
 }
 
 .info th {
-  color: #888;
+  color: #627484;
   line-height: 20px;
 }
 
@@ -587,13 +604,6 @@ table.info {
 
 #synopsis {
   clear: both;
-}
-
-.no-frame #synopsis {
-  display: block;
-  right: 0;
-  height: 80%;
-  top: 10%;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -690,7 +700,6 @@ table.info {
   width: auto;
   position: static;
   padding-right: 0.25em;
-  color: #777;
   font-size: 100%;
   text-shadow: 0 1px #fff;
 }

@@ -70,19 +70,26 @@ function initStyle() {
 
 var collapsers = {};
 
-function toggleCollapsible(id) {
+function toggleCollapsible(id, initial) {
   var collapser = document.getElementById("collapser." + id);
-  var target = document.getElementById("collapser-target." + id);
+  if (collapser) {
+    var target = document.getElementById("collapser-target." + id);
 
-  var collapsed = $(collapser).hasClass("collapsed");
+    var collapsed = $(collapser).hasClass("collapsed");
 
-  $(collapser).toggleClass("collapsed");
-  $(target).toggleClass("collapsed");
+    $(collapser).toggleClass("collapsed");
 
-  if (collapsed) {
-    collapsers[id] = null;
-  } else {
+    if (initial) {
+      $(target).toggle();
+    } else {
+      $(target).fadeToggle(100);
+    }
+  }
+
+  if (Object.prototype.hasOwnProperty.call(collapsers, id)) {
     delete collapsers[id];
+  } else {
+    collapsers[id] = null;
   }
 
   Cookies.set("haddock-collapsed", Object.keys(collapsers).join("+"));
@@ -91,7 +98,7 @@ function toggleCollapsible(id) {
 function initCollapsers() {
   var cookie = Cookies.get("haddock-collapsed");
   if (cookie) {
-    cookie.split("+").forEach(toggleCollapsible);
+    cookie.split("+").forEach(function(id) { toggleCollapsible(id, true); });
   }
 }
 
