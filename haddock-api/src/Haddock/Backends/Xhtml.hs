@@ -32,7 +32,7 @@ import Haddock.Types
 import Haddock.Version
 import Haddock.Utils
 import Text.XHtml hiding ( name, title, p, quote )
-import qualified Text.XHtml as XHtml
+import qualified Text.XHtml as H
 import Haddock.GhcUtils
 
 import Control.Monad         ( when, unless )
@@ -105,26 +105,23 @@ copyHtmlBits odir libdir themes = do
     copyCssFile f = copyFile f (combine odir (takeFileName f))
     copyLibFile f = copyFile (joinPath [libhtmldir, f]) (joinPath [odir, f])
   mapM_ copyCssFile (cssFiles themes)
-  mapM_ copyLibFile [ jsFile, framesFile ]
+  mapM_ copyLibFile ["jquery.min.js", "js.cookie.js", "haddock.js"]
 
 
 headHtml :: String -> Maybe String -> Themes -> Html
 headHtml docTitle miniPage themes =
   header << [
     meta ! [httpequiv "Content-Type", content "text/html; charset=UTF-8"],
-    meta ! [XHtml.name "viewport",
-            content "width=device-width, initial-scale=1.0"],
+    meta ! [H.name "viewport", content "width=device-width, initial-scale=1.0"],
     thetitle << docTitle,
     styleSheet themes,
-    script ! [src jsFile, thetype "text/javascript"] << noHtml,
-    script ! [thetype "text/javascript"]
-        -- NB: Within XHTML, the content of script tags needs to be
-        -- a <![CDATA[ section. Will break if the miniPage name could
-        -- have "]]>" in it!
-      << primHtml (
-          "//<![CDATA[\nwindow.onload = function () {pageLoad();"
-          ++ setSynopsis ++ "};\n//]]>\n")
-    ]
+    script ! [src "jquery.min.js", thetype "text/javascript"] << noHtml,
+    script ! [src "js.cookie.js", thetype "text/javascript"] << noHtml,
+    script ! [src "haddock.js", thetype "text/javascript"] << noHtml,
+    script ! [thetype "text/javascript"] << primHtml (
+      "//<![CDATA[\n" ++
+      "window.onload = function() { haddock._initPage(); };\n" ++
+      "//]]>\n")]
   where
     setSynopsis = maybe "" (\p -> "setSynopsis(\"" ++ p ++ "\");") miniPage
 
@@ -167,11 +164,11 @@ indexButton maybe_index_url
 bodyHtml :: String -> Maybe Interface
     -> SourceURLs -> WikiURLs
     -> Maybe String -> Maybe String
-    -> Bool -> Html -> Html
+    -> [String] -> Html -> Html
 bodyHtml doctitle iface
            maybe_source_url maybe_wiki_url
            maybe_contents_url maybe_index_url
-           hasSidebar pageContent =
+           contentClasses pageContent =
   body << [
     divPackageHeader << [
       unordList (catMaybes [
@@ -182,15 +179,14 @@ bodyHtml doctitle iface
             ! [theclass "links", identifier "page-menu"],
       nonEmptySectionName << doctitle
       ],
-    thediv ! ([identifier "content"] ++ hasSidebarClass) << pageContent,
+    thediv ! ([identifier "content", theclass (unwords contentClasses)])
+      << pageContent,
     divFooter << paragraph << (
       "Produced by " +++
       (anchor ! [href projectUrl] << toHtml projectName) +++
       (" version " ++ projectVersion)
       )
     ]
-  where
-    hasSidebarClass = if hasSidebar then [theclass "has-sidebar"] else []
 
 
 moduleInfo :: Interface -> Html
@@ -262,7 +258,7 @@ ppHtmlContents dflags odir doctitle _maybe_package
         headHtml doctitle Nothing themes +++
         bodyHtml doctitle Nothing
           maybe_source_url maybe_wiki_url
-          Nothing maybe_index_url False << [
+          Nothing maybe_index_url [] << [
             ppPrologue qual doctitle prologue,
             ppModuleTree qual tree
           ]
@@ -301,7 +297,7 @@ mkNode qual ss p (Node s leaf pkg srcPkg short ts) =
       (_,   _    ) -> [theclass "module"]
 
     cBtn = case (ts, leaf) of
-      (_:_, True) -> thespan ! collapseControl p True "" << spaceHtml
+      (_:_, True) -> thespan ! collapseControl p True "" << noHtml
       (_,   _   ) -> noHtml
       -- We only need an explicit collapser button when the module name
       -- is also a leaf, and so is a link to a module page. Indeed, the
@@ -395,10 +391,10 @@ ppHtmlIndex odir doctitle _maybe_package themes
       headHtml (doctitle ++ " (" ++ indexName ch ++ ")") Nothing themes +++
       bodyHtml doctitle Nothing
         maybe_source_url maybe_wiki_url
-        maybe_contents_url Nothing False << [
+        maybe_contents_url Nothing [] << [
           if showLetters then indexInitialLetterLinks else noHtml,
           if null items
-            then divIndex << [XHtml.p ! [theclass "no-items"] $ toHtml "Select a letter."]
+            then divIndex << [H.p ! [theclass "no-items"] $ toHtml "Select a letter."]
             else divIndex << [sectionName << indexName ch, buildIndex items]
           ]
 
@@ -509,9 +505,9 @@ ppHtmlModule odir doctitle themes
         headHtml mdl_str (Just $ "mini_" ++ moduleHtmlFile mdl) themes +++
         bodyHtml doctitle (Just iface)
           maybe_source_url maybe_wiki_url
-          maybe_contents_url maybe_index_url True << [
+          maybe_contents_url maybe_index_url ["has-module-prologue"] << [
             h1 ! [theclass "module-name"] $ toHtml mdl_str,
-            thediv ! [identifier "sidebar"] << [
+            thediv ! [identifier "module-prologue"] << [
               divModuleInfo (sectionName << "Information" +++ moduleInfo iface),
               ppModuleContents real_qual exports],
             ifaceToHtml maybe_source_url maybe_wiki_url iface unicode real_qual
@@ -532,6 +528,9 @@ ppHtmlModuleMiniSynopsis odir _doctitle themes iface unicode qual debug = do
            miniSynopsis mdl iface unicode qual)
   createDirectoryIfMissing True odir
   writeFile (joinPath [odir, "mini_" ++ moduleHtmlFile mdl]) (renderToString debug html)
+
+
+--------------------------------------------------------------------------------
 
 
 ifaceToHtml :: SourceURLs -> WikiURLs -> Interface -> Bool -> Qualification -> Html
@@ -578,6 +577,9 @@ ifaceToHtml maybe_source_url maybe_wiki_url iface unicode qual
         mapMaybe (processExport False linksInfo unicode qual) exports
 
     linksInfo = (maybe_source_url, maybe_wiki_url)
+
+
+--------------------------------------------------------------------------------
 
 
 miniSynopsis :: Module -> Interface -> Bool -> Qualification -> Html

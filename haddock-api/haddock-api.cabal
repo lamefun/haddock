@@ -20,7 +20,9 @@ data-dir:
 data-files:
   html/solarized.css
   html/frames.html
-  html/haddock-util.js
+  html/jquery.min.js
+  html/js.cookie.js
+  html/haddock.js
   html/highlight.js
   html/Classic.theme/haskell_icon.gif
   html/Classic.theme/minus.gif

@@ -160,8 +160,8 @@ subTableSrc qual lnks splice decls = Just $ table << aboves (concatMap subRow de
   where
     subRow ((decl, mdoc, subs),L loc dn) =
       (td ! [theclass "src clearfix"] <<
-        (thespan ! [theclass "inst-left"] << decl)
-        <+> linkHtml loc dn
+        (thespan ! [theclass "inst-body"] << decl)
+        <+> (thespan ! [theclass "inst-links"] << linkHtml loc dn)
       <->
       docElement td << fmap (docToHtml Nothing qual) mdoc
       )
@@ -247,14 +247,16 @@ declElem = paragraph ! [theclass "src"]
 -- it adds a source and wiki link at the right hand side of the box
 topDeclElem :: LinksInfo -> SrcSpan -> Bool -> [DocName] -> Html -> Html
 topDeclElem lnks loc splice names html =
-    declElem << (html <+> (links lnks loc splice $ head names))
-        -- FIXME: is it ok to simply take the first name?
+    declElem << (
+      (thespan ! [theclass "decl-body"] << html) <+>
+      (thespan ! [theclass "decl-links"] << links lnks loc splice (head names)))
+      -- FIXME: is it ok to simply take the first name?
 
 -- | Adds a source and wiki link at the right hand side of the box.
 -- Name must be documented, otherwise we wouldn't get here.
 links :: LinksInfo -> SrcSpan -> Bool -> DocName -> Html
 links ((_,_,sourceMap,lineMap), (_,_,maybe_wiki_url)) loc splice (Documented n mdl) =
-   (srcLink <+> wikiLink)
+  (srcLink <+> wikiLink)
   where srcLink = let nameUrl = Map.lookup origPkg sourceMap
                       lineUrl = Map.lookup origPkg lineMap
                       mUrl | splice    = lineUrl

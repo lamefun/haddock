@@ -224,7 +224,7 @@ pre, code, kbd, samp, tt, .src {
 /*----------------------------------------------------------------------------*/
 
 .caption, h1, h2, h3 {
-  margin-top: 50px;
+  margin-top: 40px;
   margin-bottom: 15px;
 }
 
@@ -261,37 +261,39 @@ ul.links li a {
 
 /*----------------------------------------------------------------------------*/
 
-.hide { display: none; }
-
-.show { display: inherit; }
-
 .clear { clear: both; }
 
 /*----------------------------------------------------------------------------*/
 /* Collapsers                                                                 */
 /*----------------------------------------------------------------------------*/
 
-.collapser:before { content: ""; }
-.expander:before { content: ""; }
+body.has-javascript .collapser:before {
+  content: "";
+}
 
-.collapser,
-.expander {
+body.has-javascript .collapser.collapsed:before {
+  content: "";
+}
+
+.collapser {
   cursor: pointer;
   position: relative;
 }
 
-.collapser:before,
-.expander:before {
+.collapser:before {
   font-family: 'FontAwesome';
   display: inline-block;
   font-size: 90%;
-  color: #777;
+  color: #aaa;
   padding-right: 0.25em;
 }
 
-.collapser:hover:before,
-.expander:hover:before {
-  color: #222;
+.collapser:hover:before {
+  color: #666;
+}
+
+body.has-javascript .collapser-target.collapsed {
+  display: none;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -347,7 +349,7 @@ strong.userinput:before {
 
 .top p.src {
   border-top: 1px solid #ccc;
-  margin-top: 30px;
+  margin-top: 20px;
   margin-bottom: 15px;
 }
 
@@ -429,6 +431,12 @@ strong.userinput:before {
 }
 
 /*----------------------------------------------------------------------------*/
+
+#description > .doc.empty {
+  display: none;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Style menu                                                                 */
 /*----------------------------------------------------------------------------*/
 
@@ -452,8 +460,8 @@ strong.userinput:before {
   margin: 0;
   padding: 0;
   text-align: center;
-  right: -1.5em;
-  top: 1.25em;
+  right: 0em;
+  top: 2em;
 }
 
 #style-menu ul {
@@ -555,8 +563,7 @@ table.info {
   background: transparent;
 }
 
-#synopsis .collapser:before,
-#synopsis .expander:before {
+#synopsis .collapser:before {
   font-size: 80%;
 }
 
@@ -585,7 +592,6 @@ table.info {
 }
 
 #synopsis {
-  display: none;
   clear: both;
 }
 
@@ -619,15 +625,35 @@ table.info {
 /*----------------------------------------------------------------------------*/
 
 #interface div.top > .doc,
-#interface div.top > .subs {
+#interface div.top > .subs,
+#interface .inst-details > .subs {
   margin-left: 25px;
 }
 
 /*----------------------------------------------------------------------------*/
 
+#interface p.src,
+#interface .subs.instances > div > table > tbody > tr > td.src {
+  display: flex;
+}
+
+#interface p.src .decl-body,
+#interface td.src .decl-body,
+#interface td.src .inst-body {
+  display: block;
+  flex-shrink: 1;
+  width: 100%;
+}
+
+#interface p.src .decl-links,
+#interface td.src .decl-links,
+#interface td.src .inst-links {
+  display: block;
+  flex-shrink: 0;
+}
+
 #interface p.src .link,
 #interface td.src .link {
-  float: right;
   color: #777;
   border-left: 1px solid #bbb;
   padding-left: 10px;
@@ -650,12 +676,29 @@ table.info {
   border-spacing: 0px 4px;
 }
 
+/*----------------------------------------------------------------------------*/
+
+#interface td.doc {
+  padding-left: 20px;
+}
+
 #interface td.doc p {
   margin: 0;
 }
 
 #interface td.doc p + p {
   margin-top: 0.8em;
+}
+
+/*----------------------------------------------------------------------------*/
+
+#interface .inst-body .collapser:before {
+  width: auto;
+  position: static;
+  padding-right: 0.25em;
+  color: #777;
+  font-size: 100%;
+  text-shadow: 0 1px #fff;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -713,11 +756,6 @@ table.info {
 .inst, .inst li {
   list-style: none;
   margin-left: 1em;
-}
-
-/* Workaround for bug in Firefox (issue #384) */
-.inst-left {
-  float: left;
 }
 
 .subs {
@@ -858,14 +896,11 @@ table.info {
 #module-list ul {
   list-style: none;
   margin: 0;
+  width: 100%;
 }
 
 #module-list ul ul {
   margin-left: 20px;
-}
-
-#module-list li {
-  clear: right;
 }
 
 #module-list li {
@@ -900,6 +935,26 @@ table.info {
   #content {
     margin-left: 10px;
     margin-right: 10px;
+  }
+}
+
+@media all and (max-width: 420px) {
+  #module-list ul ul {
+    margin-left: 0;
+  }
+
+  #module-list .collapser:empty:before {
+    display: none;
+  }
+
+  #module-list .collapser:not(:empty) {
+    display: none;
+  }
+
+  #interface div.top > .doc,
+  #interface div.top > .subs,
+  #interface .inst-details > .subs {
+    margin-left: 0;
   }
 }
 
@@ -938,7 +993,7 @@ table.info {
     max-width: 700px;
   }
 
-  #sidebar {
+  #module-prologue {
     display: flex;
     width: 100%;
   }
@@ -956,8 +1011,7 @@ table.info {
 }
 
 @media all and (min-width: 800px) {
-  .collapser:before,
-  .expander:before {
+  .collapser:before {
     padding-right: 0;
     width: 0;
     position: relative;
@@ -966,7 +1020,7 @@ table.info {
 }
 
 @media all and (min-width: 1200px) {
-  #content.has-sidebar {
+  #content.has-module-prologue {
     width: 1070px;
     position: relative;
     padding-right: 370px;
@@ -974,19 +1028,6 @@ table.info {
 
   #content {
     width: 700px;
-  }
-
-  #sidebar {
-    background: #f6f6f6;
-    padding: 15px;
-    width: 300px;
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-
-  #sidebar h1 {
-    font-size: 19px;
   }
 
   .info tr, .info th, .info td {
@@ -1005,14 +1046,23 @@ table.info {
     display: none;
   }
 
-  #table-of-contents,
-  #module-info {
-    padding-left: 15px;
-    padding-right: 15px;
+  #module-prologue {
+    background: #f6f6f6;
+    padding-top: 10px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 20px;
+    width: 280px;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 
-  #table-of-contents .caption,
-  #module-info .caption {
+  #module-prologue h1 {
+    font-size: 19px;
+  }
+
+  #module-prologue > .section > .caption {
     margin-top: 15px;
     margin-bottom: 15px;
     border: none;

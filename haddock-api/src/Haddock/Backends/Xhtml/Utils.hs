@@ -1,4 +1,4 @@
------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- |
 -- Module      :  Haddock.Backends.Html.Util
 -- Copyright   :  (c) Simon Marlow   2003-2006,
@@ -9,7 +9,8 @@
 -- Maintainer  :  haddock@projects.haskell.org
 -- Stability   :  experimental
 -- Portability :  portable
------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
 module Haddock.Backends.Xhtml.Utils (
   renderToString,
 
@@ -28,18 +29,20 @@ module Haddock.Backends.Xhtml.Utils (
   collapseSection, collapseToggle, collapseControl,
 ) where
 
+--------------------------------------------------------------------------------
 
 import Haddock.Utils
 
 import Data.Maybe
 
-import Text.XHtml hiding ( name, title, p, quote )
+import Text.XHtml hiding (name, title, p, quote)
 import qualified Text.XHtml as XHtml
 
-import GHC      ( SrcSpan(..), srcSpanStartLine, Name )
-import Module   ( Module, ModuleName, moduleName, moduleNameString )
-import Name     ( getOccString, nameOccName, isValOcc )
+import GHC    (SrcSpan(..), srcSpanStartLine, Name)
+import Module (Module, ModuleName, moduleName, moduleNameString)
+import Name   (getOccString, nameOccName, isValOcc)
 
+--------------------------------------------------------------------------------
 
 -- | Replace placeholder string elements with provided values.
 --
@@ -206,30 +209,40 @@ linkedAnchor n = anchor ! [href ('#':n)]
 groupId :: String -> String
 groupId g = makeAnchorId ("g:" ++ g)
 
---
--- A section of HTML which is collapsible.
---
+--------------------------------------------------------------------------------
+-- * Collapsible sections
+--------------------------------------------------------------------------------
+
 
 -- | Attributes for an area that can be collapsed
 collapseSection :: String -> Bool -> String -> [HtmlAttr]
-collapseSection id_ state classes = [ identifier sid, theclass cs ]
-  where cs = unwords (words classes ++ [pick state "show" "hide"])
-        sid = "section." ++ id_
+collapseSection id_ state classes =
+  [identifier sid, theclass cs]
+  where
+    sid = "collapser-target." ++ id_
+    cs = unwords (
+      words classes
+      ++ ["collapser-target"]
+      ++ if state then [] else ["collapsed"])
+
 
 -- | Attributes for an area that toggles a collapsed area
 collapseToggle :: String -> [HtmlAttr]
-collapseToggle id_ = [ strAttr "onclick" js ]
-  where js = "toggleSection('" ++ id_ ++ "')";
+collapseToggle id_ =
+  [strAttr "onclick" ("haddock._toggleCollapsible('" ++ id_ ++ "')")]
+
 
 -- | Attributes for an area that toggles a collapsed area,
 -- and displays a control.
 collapseControl :: String -> Bool -> String -> [HtmlAttr]
 collapseControl id_ state classes =
-  [ identifier cid, theclass cs ] ++ collapseToggle id_
-  where cs = unwords (words classes ++ [pick state "collapser" "expander"])
-        cid = "control." ++ id_
+  [identifier cid, theclass cs] ++ collapseToggle id_
+  where
+    cid = "collapser." ++ id_
+    cs = unwords (
+      words classes
+      ++ ["collapser"]
+      ++ if state then [] else ["collapsed"])
 
 
-pick :: Bool -> a -> a -> a
-pick True  t _ = t
-pick False _ f = f
+--------------------------------------------------------------------------------
