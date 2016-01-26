@@ -1,0 +1,1568 @@
+/*----------------------------------------------------------------------------*/
+/* Font imports                                                               */
+/*----------------------------------------------------------------------------*/
+
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  src: url("OpenSans-Regular.ttf") format("TrueType");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-style: italic;
+  font-weight: normal;
+  src: url("OpenSans-Italic.ttf") format("TrueType");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: bold;
+  src: url("OpenSans-Bold.ttf") format("TrueType");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-style: italic;
+  font-weight: bold;
+  src: url("OpenSans-BoldItalic.ttf") format("TrueType");
+}
+
+@font-face {
+  font-family: "FontAwesome";
+  font-style: normal;
+  font-weight: normal;
+  src: url("FontAwesome.ttf") format("TrueType");
+}
+
+@font-face {
+  font-family: "Haskell";
+  font-style: normal;
+  font-weight: normal;
+  src: url("Haskell.ttf") format("TrueType");
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fundamentals                                                               */
+/*----------------------------------------------------------------------------*/
+
+* { margin: 0; padding: 0 }
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #fff;
+  color: #222;
+  text-align: left;
+  height: 100%;
+}
+
+body, table {
+  word-wrap: break-word;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Links                                                                      */
+/*----------------------------------------------------------------------------*/
+
+a { text-decoration: none; }
+
+a[href]:link {
+  color: #428bca;
+  text-decoration: none
+}
+
+a[href]:visited { color: #992299; }
+
+a[href]:hover,
+a[href]:focus {
+  color: #2a6496;
+  text-decoration: underline;
+}
+
+a[href]:visited:hover,
+a[href]:visited:focus {
+  color: #661166;
+}
+
+a[href]:focus {
+  outline: 1px dotted;
+  outline-offset: 1px
+}
+
+/*----------------------------------------------------------------------------*/
+
+a[href].def:link,
+a[href].def:visited {
+  color: black;
+}
+
+a[href].def:hover {
+  color: rgb(78, 98, 114);
+}
+
+/*----------------------------------------------------------------------------*/
+/* General fonts and sizes                                                    */
+/*----------------------------------------------------------------------------*/
+
+body, select, input, button, textarea {
+  font-family: 'Open Sans', 'Liberation Sans', sans-serif;
+  font-size: 15px;
+}
+
+/*----------------------------------------------------------------------------*/
+
+table {
+  font-size: inherit;
+  font: 100%;
+}
+
+/*----------------------------------------------------------------------------*/
+
+pre, code, kbd, samp, tt, .src {
+  font-family: 'Ubuntu Mono', 'Liberation Mono', monospace;
+  line-height: 120%;
+}
+
+/*----------------------------------------------------------------------------*/
+
+#page-header,
+#sidebar-header,
+#sidebar-location {
+  font-size: 14px;
+}
+
+#module-info > table {
+  font-size: 13px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Header fonts                                                               */
+/*----------------------------------------------------------------------------*/
+
+h1, h2, h3, h4, h5, h6 { color: #6E618D; }
+
+h1 { font-size: 20px; }
+h2 { font-size: 20px; }
+h3 { font-size: 18px; }
+h4 { font-size: 15px; }
+h5 { font-size: 15px; font-style: italic; }
+h6 { font-size: 13px; }
+
+h1.module-name { font-size: 25px; }
+
+/*----------------------------------------------------------------------------*/
+/* Header margins                                                             */
+/*----------------------------------------------------------------------------*/
+
+.caption, h1, h2, h3 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+h4, h5, h6 {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+h1 + h2, h2 + h3, h3 + h4, h4 + h5, h5 + h6 {
+  margin-top: inherit;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Collapsers                                                                 */
+/*----------------------------------------------------------------------------*/
+
+.has-javascript .collapser:before {
+  content: "";
+}
+
+.has-javascript .collapser.collapsed:before {
+  content: "";
+}
+
+.has-javascript .collapser {
+  cursor: pointer;
+  position: relative;
+}
+
+.collapser:before {
+  font-family: 'FontAwesome';
+  font-weight: normal;
+  display: inline-block;
+  font-size: 14px;
+  vertical-align: middle;
+  color: #aaa;
+  padding-right: 7px;
+}
+
+h1.collapser:before {
+  font-size: 17px;
+  bottom: 1px;
+}
+
+.has-javascript .collapser-target.collapsed {
+  display: none;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Documentation: normal text                                                 */
+/*----------------------------------------------------------------------------*/
+
+.doc > * {
+  margin-bottom: 1em;
+}
+
+.doc > *:last-child {
+  margin-bottom: 0;
+}
+
+/*----------------------------------------------------------------------------*/
+
+.doc p, .doc li {
+  text-align: justify;
+  hyphens: auto;
+}
+
+/*----------------------------------------------------------------------------*/
+
+.doc ul, .doc il {
+  margin-left: 30px;
+}
+
+.doc ul > li {
+  margin-bottom: 0.5em;
+  list-style: none;
+  position: relative;
+}
+
+.doc ul > li:last-child {
+  margin-bottom: 0;
+}
+
+.doc ul > li:before {
+  content: "•";
+  position: absolute;
+  left: -0.85em;
+}
+
+/*----------------------------------------------------------------------------*/
+
+dl { margin: 0.8em 0; }
+
+dt { font-weight: bold; }
+
+dd { margin-left: 2em; }
+
+/*----------------------------------------------------------------------------*/
+/* Documentation: code and monospace text                                     */
+/*----------------------------------------------------------------------------*/
+
+pre, code, tt {
+  hyphens: none;
+}
+
+pre.block, pre.screen, #synopsis > ul {
+  color: #3a3a3a;
+  background: #eeeef9;
+  border-left: 4px solid #dcdcec;
+  padding-left: 13px;
+  padding-right: 13px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  overflow: auto;
+  position: relative;
+}
+
+code.inline, tt {
+  background: #ededf6;
+  padding: 2px 2px;
+}
+
+pre.block code.inline,
+pre.block tt {
+  padding: 0;
+}
+
+pre.screen code.prompt {
+  display: none;
+}
+
+pre.screen code.input:before {
+  content: "λ ";
+  font-weight: bold;
+  color: #8F4E8B;
+}
+
+/*----------------------------------------------------------------------------*/
+
+.keyword { font-weight: normal; }
+
+.def { font-weight: bold; }
+
+/*----------------------------------------------------------------------------*/
+/* Page structure                                                             */
+/*----------------------------------------------------------------------------*/
+
+#page {
+  min-width: 100%;
+  min-height: 100%;
+  position: relative;
+}
+
+/*----------------------------------------------------------------------------*/
+
+#content {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 80px;
+  padding-bottom: 120px;
+}
+
+/*----------------------------------------------------------------------------*/
+
+#page-header {
+  background: #352F44;
+  border-top: 6px solid #2c1e37;
+  color: #ddd;
+  padding-left: 35px;
+  padding-right: 35px;
+  text-align: left;
+  height: 80px;
+  line-height: 40px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+#page-header > h1 {
+  display: block;
+  color: #ddd;
+  font-size: 14px;
+  text-align: center;
+  line-height: 40px;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#page-header > h1:before,
+#sidebar-logo-link:before {
+  content: "";
+  font-family: Haskell;
+  color: #ddd;
+  font-weight: normal;
+  font-style: normal;
+}
+
+#page-header > h1:before {
+  padding-right: 10px;
+  position: relative;
+}
+
+/*----------------------------------------------------------------------------*/
+
+#page-menu {
+  display: block;
+  height: 40px;
+  margin: 0;
+  margin-left: auto;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+#page-menu > li {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  margin-left: 20px;
+}
+
+#page-menu > li > a,
+#page-menu > li > div.dropdown-holder > a {
+  text-decoration: none;
+}
+
+#page-menu > li > a[href]:link,
+#page-menu > li > a[href]:visited,
+#page-menu > li > div.dropdown-holder > a[href]:link,
+#page-menu > li > div.dropdown-holder > a[href]:visited {
+  color: #d1cddc;
+}
+
+#page-menu > li > a[href]:hover,
+#page-menu > li > div.dropdown-holder > a[href]:hover {
+  color: #fff;
+}
+
+/*----------------------------------------------------------------------------*/
+
+#description > .doc.empty {
+  display: none;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Style menu                                                                 */
+/*----------------------------------------------------------------------------*/
+
+div.dropdown-holder {
+  position: relative;
+  z-index: 2;
+  display: inline;
+}
+
+div.dropdown-holder > a:after {
+  content: " ";
+  font-family: "FontAwesome";
+}
+
+ul.dropdown-menu {
+  background: #fff;
+  box-shadow: 0 1px 2px 1px rgba(0,0,0,0.35);
+  text-align: left;
+  line-height: 200%;
+  list-style: none;
+  margin: 0;
+  padding: 1px;
+  overflow: visible;
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  top: 100%;
+}
+
+ul.dropdown-menu > li {
+  display: list-item;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.dropdown-menu > li > a {
+  min-width: 4em;
+  margin: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+  display: block;
+}
+
+ul.dropdown-menu > li > a[href]:link,
+ul.dropdown-menu > li > a[href]:visited {
+  color: #428bca;
+}
+
+ul.dropdown-menu > li > a[href]:hover,
+ul.dropdown-menu > li > a[href]:focus {
+  text-decoration: none;
+  background: #428bca;
+  color: #f0f0f0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Footer                                                                     */
+/*----------------------------------------------------------------------------*/
+
+#footer {
+  background: #1B2332;
+  padding: 0.5em 0;
+  color: #f0f0f0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  height: 60px;
+}
+
+#footer p {
+  text-align: center;
+  line-height: 60px;
+  margin: 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Information table                                                          */
+/*----------------------------------------------------------------------------*/
+
+#module-info > table {
+  color: #444;
+  border: none;
+  border-spacing: 0;
+  margin: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+#module-info table.info .extension-list {
+  list-style-type: none;
+  margin-left: 0;
+}
+
+#module-info table.info th,
+#module-info table.info td {
+  text-align: left;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  vertical-align: top;
+}
+
+#module-info table.info th {
+  color: #777;
+  width: 7em;
+}
+
+#module-info table.info td {
+  padding-left: 15px;
+  white-space: pre-line;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Synopsis                                                                   */
+/*----------------------------------------------------------------------------*/
+
+#synopsis ul ul {
+  overflow: hidden;
+  margin-left: 20px;
+}
+
+#synopsis ul,
+#synopsis ul li.src {
+  white-space: nowrap;
+  list-style: none;
+  margin-left: 0;
+}
+
+#synopsis ul li.src {
+  background: transparent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Table of contents                                                          */
+/*----------------------------------------------------------------------------*/
+
+#table-of-contents ul {
+  list-style: none;
+  margin-left: 0;
+}
+
+#table-of-contents ul ul {
+  margin-left: 20px;
+}
+
+#table-of-contents li {
+  list-style: none;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 95%;
+}
+
+#table-of-contents li:last-child {
+  margin-bottom: 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Module synopsis                                                            */
+/*----------------------------------------------------------------------------*/
+
+#synopsis > ul > li {
+  margin-bottom: 10px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Module interface: common                                                   */
+/*----------------------------------------------------------------------------*/
+
+#interface .src {
+  background: #eaeaea;
+  padding: 0.25em 0.5em;
+}
+
+/*----------------------------------------------------------------------------*/
+
+#interface .top {
+  margin-top: 2em;
+  margin-bottom: 1em;
+  border-top: 1px solid #ccc;
+}
+
+#interface .top > p.src {
+  display: flex;
+  padding: 0.5em 1.5em;
+}
+
+#interface h1 + .top,
+#interface h2 + .top,
+#interface h3 + .top,
+#interface h4 + .top {
+  margin-top: 1em;
+}
+
+#interface .top > .subs,
+#interface .top > .doc {
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#interface p.src .decl-body,
+#interface td.src .decl-body,
+#interface td.src .inst-body {
+  display: block;
+  flex-shrink: 1;
+  width: 100%;
+}
+
+#interface p.src .decl-links,
+#interface td.src .decl-links,
+#interface td.src .inst-links {
+  display: block;
+  flex-shrink: 0;
+}
+
+#interface p.src .link,
+#interface td.src .link {
+  color: #777;
+  border-left: 1px solid #bbb;
+  padding-left: 10px;
+  margin-left: 10px;
+}
+
+#interface span.fixity {
+  color: #777;
+  border-left: 1px solid #bbb;
+  padding-left: 10px;
+  margin-left: 10px;
+}
+
+#interface span.rightedge {
+  border-left: 1px solid #bbb;
+  margin-left: 10px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Module interface: subs                                                     */
+/*----------------------------------------------------------------------------*/
+
+#interface .subs > ul > li > .subs {
+  margin-top: 1em;
+}
+
+#interface .subs > ul {
+  list-style: none;
+  margin: 0;
+  border-collapse: separate;
+}
+
+#interface .subs > ul > li {
+  margin-bottom: 15px;
+}
+
+#interface .subs > ul > li:last-child {
+  margin-bottom: 0;
+}
+
+#interface .subs > ul > li > dfn,
+#interface .subs > ul > li > .doc {
+  margin: 0;
+}
+
+#interface .subs > ul > li > dfn {
+  display: block;
+  font-style: normal;
+  font-weight: bold;
+  padding: 0.35em 1em;
+}
+
+#interface .subs > ul > li > .subs,
+#interface .subs > ul > li > .doc {
+  margin-left: 1em;
+}
+
+#interface .subs > ul > li > .doc {
+  margin-right: 1.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.75em;
+}
+
+#interface .subs > ul > li > .doc.empty {
+  display: none;
+}
+
+#interface .subs > table > tbody> tr > td.doc {
+  padding-left: 15px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Module interface: function arguments                                       */
+/*----------------------------------------------------------------------------*/
+
+#interface .top > .arguments {
+  margin: 0;
+}
+
+#interface .top > .arguments > table {
+  width: 100%;
+}
+
+#interface .subs > table {
+  border-collapse: collapse;
+}
+
+#interface .top > .arguments > table > tbody > tr > td {
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#interface .top > .arguments > table > tbody > tr > td.src {
+  background: #f5f5f5;
+  padding-left: 3em;
+}
+
+#interface .top > .arguments > table > tbody > tr > td.doc {
+  font-size: 14px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Module interface: record fields                                            */
+/*----------------------------------------------------------------------------*/
+
+#interface .fields > h4 {
+  display: none;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Module interface: instances                                                */
+/*----------------------------------------------------------------------------*/
+
+#interface .inst-body .collapser:before {
+  width: auto;
+  position: static;
+  padding-right: 0.25em;
+  font-size: 14px;
+  color: #888;
+}
+
+/*----------------------------------------------------------------------------*/
+
+/* Render short-style data instances */
+#interface .inst ul {
+  height: 100%;
+  padding: 0.5em;
+  margin: 0;
+}
+
+#interface .inst, .inst li {
+  list-style: none;
+  margin-left: 1em;
+}
+
+#interface .arguments > h4 {
+  display: none;
+}
+
+/*----------------------------------------------------------------------------*/
+
+#interface .instances td.src {
+  display: flex;
+}
+
+#interface .inst-details {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+#interface .inst-details p.src {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Warnings                                                                   */
+/*----------------------------------------------------------------------------*/
+
+.warning {
+  color: red;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Index: alphabet                                                            */
+/*----------------------------------------------------------------------------*/
+
+#alphabet ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5em 0 0;
+  text-align: center;
+}
+
+#alphabet li {
+  font-family: 'Ubuntu Mono', monospace;
+  display: inline-block;
+  margin: 0.25em;
+  font-size: 135%;
+  position: relative;
+}
+
+#alphabet a {
+  background: #f0f0f0;
+  color: #666;
+  border-bottom: 4px solid #ddd;
+  border-radius: 2px;
+  font-weight: bold;
+  padding-left: 0.7em;
+  padding-right: 0.7em;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+  display: inline-block;
+  min-width: 0.8em;
+}
+
+#alphabet a.non-ascii {
+  color: #447777;
+  background: #e0f4f4;
+  border-bottom-color: #c8e2e2;
+}
+
+#alphabet a.non-ascii:after {
+  content: "*";
+  color: #99bbbb;
+  font-family: FontAwesome;
+  font-size: 50%;
+  position: absolute;
+  right: 0.5em;
+  top: 0.35em;
+}
+
+#alphabet a:hover {
+  text-decoration: none;
+  color: #222;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Index: index table                                                         */
+/*----------------------------------------------------------------------------*/
+
+#index table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#index td {
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+#index td:first-child {
+  padding-right: 1em;
+}
+
+#index td.src, #index td.cat {
+  background: #f2f2f2;
+}
+
+#index td.src {
+  font-weight: bold;
+  white-space: nowrap;
+  min-width: 3em;
+}
+
+#index td.cat {
+  font-size: 80%;
+  font-style: italic;
+  padding-left: 3em;
+}
+
+#index td.modules {
+  width: 100%;
+}
+
+#index .no-items {
+  color: #999;
+  font-size: 36px;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Module list                                                                */
+/*----------------------------------------------------------------------------*/
+
+#module-list ul {
+  list-style: none;
+  margin: 0;
+}
+
+#module-list ul ul {
+  margin-left: 20px;
+}
+
+#module-list li {
+  display: block;
+  margin: 0;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+#module-list li span.module {
+  color: #555;
+}
+
+#module-list li span.short-descr {
+  font-size: 12px;
+  color: #777;
+}
+
+#module-list li span.short-descr:before {
+  content: "– ";
+}
+
+#module-list .package {
+  float: right;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sidebar mini pages                                                         */
+/*----------------------------------------------------------------------------*/
+
+.mini {
+  color: #aaa;
+  font-size: 13px;
+}
+
+/*----------------------------------------------------------------------------*/
+
+.mini h1, .mini h2, .mini h3, .mini h4 {
+  margin: 0;
+  color: #888;
+  font-weight: bold;
+  font-size: 110%;
+}
+
+.mini li.group {
+  margin-top: 20px;
+}
+
+.mini li.group:first-child,
+.mini li.group.no-items {
+  margin-top: 0;
+}
+
+.mini h1:first-child,
+.mini h2:first-child,
+.mini h3:first-child,
+.mini h4:first-child {
+  margin-top: 0;
+}
+
+/*----------------------------------------------------------------------------*/
+
+.mini-item {
+  display: block;
+  margin: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/*----------------------------------------------------------------------------*/
+
+.mini ul {
+  list-style: none;
+  margin: 0;
+}
+
+.mini li.group > ul.members > h1,
+.mini li.group > ul.members > h2,
+.mini li.group > ul.members > h3,
+.mini li.group > ul.members > h4 {
+  font-weight: bold;
+  font-size: 100%;
+}
+
+.mini ul li.std + li.top {
+  margin-top: 20px;
+}
+
+.mini ul li {
+  margin: 0;
+}
+
+/*----------------------------------------------------------------------------*/
+
+.mini a[href]:link,
+.mini a[href]:visited {
+  color: #bbb;
+}
+
+.mini a[href]:hover,
+.mini a[href]:visited:hover,
+.mini a[href]:focus,
+.mini a[href]:visited:focus {
+  background: rgba(255,255,255,0.2);
+  text-decoration: none;
+  outline: none;
+}
+
+/*----------------------------------------------------------------------------*/
+
+.mini .module-list {
+  margin-top: 15px;
+}
+
+/*----------------------------------------------------------------------------*/
+
+.mini .src {
+  color: #999;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.mini .keyword,
+.mini .param {
+  font-size: 12px;
+  color: #888;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sidebar: main                                                              */
+/*----------------------------------------------------------------------------*/
+
+#sidebar {
+  background: #534C67;
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 350px;
+  height: 100%;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sidebar: header                                                            */
+/*----------------------------------------------------------------------------*/
+
+#sidebar-header {
+  color: #ddd;
+  height: 40px;
+  line-height: 40px;
+  position: relative;
+}
+
+#sidebar-title {
+  color: #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  height: 40px;
+  top: 0;
+  left: 40px;
+}
+
+#sidebar-logo {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 0;
+  top: 0;
+}
+
+#sidebar-logo a {
+  display: inline-block;;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sidebar: navigation                                                        */
+/*----------------------------------------------------------------------------*/
+
+#sidebar-nav {
+  position: absolute;
+  height: 70px;
+  left: 0;
+  right: 0;
+  top: 40px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sidebar: search bar                                                        */
+/*----------------------------------------------------------------------------*/
+
+#sidebar-search-bar {
+  position: relative;
+  height: 40px;
+}
+
+#sidebar-search-panel {
+  height: 30px;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 0px;
+}
+
+#sidebar-search-entry-wrapper {
+  position: absolute;
+  left: 0;
+  right: 50px;
+  top: 0;
+  bottom: 0;
+}
+
+#sidebar-search-entry {
+  color: #B4ABBA;
+  background: #352F44;
+  border: none;
+  margin: 0;
+  padding: 0;
+  padding-left: 10px;
+  padding-right: 40px;
+  font-size: 13px;
+  line-height: 3px;
+  width: 100%;
+  height: 100%;
+}
+
+#sidebar-search-button {
+  display: block;
+  color: #b4abba;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 0;
+  right: 0;
+}
+
+#sidebar-search-button:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+#sidebar-search-button .label {
+  display: none;
+}
+
+#sidebar-search-button:before {
+  content: "";
+  font-family: "FontAwesome";
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sidebar: tab bar                                                           */
+/*----------------------------------------------------------------------------*/
+
+#sidebar-tab-bar {
+  line-height: 30px;
+  padding-left: 10px;
+  height: 30px;
+}
+
+.sidebar-tab-button {
+  display: inline-block;
+  color: #958fa3;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 30px;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 30px;
+}
+
+.sidebar-tab-button:hover {
+  background: #605a72;
+}
+
+.sidebar-tab-button:focus {
+  outline: none;
+}
+
+.sidebar-tab-button::-moz-focus-inner {
+  border: none;
+}
+
+.sidebar-tab-button.selected {
+  color: #ccc;
+  background: #352F44;
+}
+
+#sidebar-tabs {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.sidebar-tab {
+  background: #352F44;
+  overflow: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.sidebar-tab-content {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sidebar: JavaScript disabled layout                                        */
+/*----------------------------------------------------------------------------*/
+
+#sidebar-tabs {
+  top: 40px;
+}
+
+#sidebar-pages-tab {
+  border-bottom: 1px solid #534C67;
+  top: 0;
+  bottom: 65%;
+}
+
+#sidebar-contents-tab {
+  top: 35%;
+  bottom: 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sidebar: JavaScript enabled layout                                         */
+/*----------------------------------------------------------------------------*/
+
+.has-javascript #sidebar-tabs {
+  top: 110px;
+}
+
+.has-javascript #sidebar-pages-tab,
+.has-javascript #sidebar-contents-tab {
+  top: 0;
+  bottom: 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sidebar: nanoscroller scrollbars                                           */
+/*----------------------------------------------------------------------------*/
+
+.nano {
+  overflow: hidden;
+}
+
+.nano > .nano-content {
+  position: absolute;
+  overflow: scroll;
+  overflow-x: hidden;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.nano > .nano-content:focus {
+  outline: thin dotted;
+}
+
+.nano > .nano-content::-webkit-scrollbar {
+  display: none;
+}
+
+.has-scrollbar > .nano-content::-webkit-scrollbar {
+  display: block;
+}
+
+.nano > .nano-pane {
+  background: transparent;
+  position: absolute;
+  width: 13px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.nano > .nano-pane:before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 5px;
+  top: 5px;
+  bottom: 5px;
+  transition: background-color 0.2s ease-out;
+}
+
+.nano > .nano-pane > .nano-slider {
+  position: relative;
+}
+
+.nano > .nano-pane > .nano-slider:before {
+  content: "";
+  background: #444;
+  background: rgba(255,255,255,0.25);
+  position: absolute;
+  left: 4px;
+  right: 5px;
+  top: 5px;
+  bottom: 5px;
+  transition: background-color 0.2s ease-out;
+}
+
+.nano:hover > .nano-pane:before,
+.nano-pane.active:before,
+.nano-pane.flashed:before {
+  background: rgba(255,255,255,0.15);
+  left: 0;
+}
+
+.nano:hover > .nano-pane > .nano-slider:before,
+.nano-pane.active > .nano-slider:before,
+.nano-pane.flashed > .nano-slider:before {
+  background: rgba(255,255,255,0.5);
+  left: 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Window width: very narrow                                                  */
+/*----------------------------------------------------------------------------*/
+
+@media all and (max-width: 320px) {
+  #content {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Window width: narrow                                                       */
+/*----------------------------------------------------------------------------*/
+
+@media all and (max-width: 400px) {
+  #content {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  #module-list ul ul {
+    margin-left: 0;
+  }
+
+  #module-list .collapser:empty:before {
+    display: none;
+  }
+
+  #module-list .collapser:not(:empty) {
+    display: none;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Window width: wide                                                         */
+/*----------------------------------------------------------------------------*/
+
+@media all and (min-width: 800px) {
+  #content {
+    max-width: 740px;
+    padding-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  #page-header,
+  #footer {
+    z-index: 3;
+  }
+
+  #module-prologue {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+  }
+
+  #module-info {
+    width: 100%;
+    flex-shrink: 1;
+  }
+
+  #table-of-contents {
+    width: 100%;
+    flex-shrink: 1;
+  }
+
+  .collapser:before {
+    padding-right: 0;
+    width: 0;
+    position: relative;
+    left: -1.1em;
+  }
+
+  #page-header {
+    display: flex;
+    height: 40px;
+  }
+
+  #page-header > h1 {
+    flex-shrink: 1;
+    width: 100%;
+    text-align: left;
+  }
+
+  #page-menu {
+    flex-shrink: 0;
+  }
+}
+
+@media all and (min-width: 800px) and (max-width: 1159px) {
+  body {
+    background: #f6f6f6;
+  }
+
+  #page:before {
+    content: "";
+    background: #fff;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    max-width: 800px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Window width: sidebar threshold                                            */
+/*----------------------------------------------------------------------------*/
+
+@media all and (min-width: 1160px) {
+  body {
+    background: #fff;
+    margin-left: 350px;
+  }
+
+  #content {
+    margin: 0;
+    padding-left: 35px;
+    padding-right: 35px;
+    position: static;
+  }
+
+  #page:before {
+    content: "";
+    background: #f0f0f0;
+    position: absolute;
+    left: 810px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  #sidebar {
+    display: flex;
+  }
+
+  #page-header {
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+    max-width: 740px;
+  }
+
+  #footer {
+    border-top: 1px solid #e0e0e0;
+    max-width: 810px;
+  }
+
+  #page-header, #footer {
+    background: transparent;
+    color: #777;
+  }
+
+  #page-header > h1 {
+    display: none;
+  }
+
+  #page-menu > li > a[href]:link,
+  #page-menu > li > a[href]:visited,
+  #page-menu > li > div.dropdown-holder > a[href]:link,
+  #page-menu > li > div.dropdown-holder > a[href]:visited {
+    color: #777;
+  }
+
+  #page-menu > li > a[href]:hover,
+  #page-menu > li > div.dropdown-holder > a[href]:hover {
+    color: #444;
+  }
+
+  #page-menu > li.exists-in-sidebar {
+    display: none;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Window width: module prologue on the right                                 */
+/*----------------------------------------------------------------------------*/
+
+@media all and (min-width: 1540px) {
+  #module-prologue {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: auto;
+    left: 850px;
+    right: 40px;
+    top: 40px;
+    z-index: 2;
+  }
+
+  #module-info table.info {
+    font-size: 12px;
+  }
+
+  #module-info > h3 {
+    color: #777;
+  }
+
+  #table-of-contents {
+    display: none;
+  }
+
+  #description > h1 {
+    display: none;
+  }
+}
+
+/*----------------------------------------------------------------------------*/

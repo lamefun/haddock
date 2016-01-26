@@ -20,27 +20,29 @@ data-dir:
 data-files:
   html/solarized.css
   html/frames.html
-  html/jquery.min.js
   html/js.cookie.js
+  html/mousetrap.min.js
+  html/jquery.min.js
+  html/jquery.nanoscroller.min.js
   html/haddock.js
   html/highlight.js
   html/Classic.theme/haskell_icon.gif
   html/Classic.theme/minus.gif
   html/Classic.theme/plus.gif
   html/Classic.theme/xhaddock.css
-  html/Ocean.std-theme/hslogo-16.png
-  html/Ocean.std-theme/minus.gif
-  html/Ocean.std-theme/ocean.css
-  html/Ocean.std-theme/plus.gif
-  html/Ocean.std-theme/synopsis.png
-  html/Purity.std-theme/FontAwesome.ttf
-  html/Purity.std-theme/Haskell.ttf
-  html/Purity.std-theme/LICENSE.txt
-  html/Purity.std-theme/OpenSans-Bold.ttf
-  html/Purity.std-theme/OpenSans-BoldItalic.ttf
-  html/Purity.std-theme/OpenSans-Italic.ttf
-  html/Purity.std-theme/OpenSans-Regular.ttf
-  html/Purity.std-theme/purity.css
+  html/Ocean.theme/hslogo-16.png
+  html/Ocean.theme/minus.gif
+  html/Ocean.theme/ocean.css
+  html/Ocean.theme/plus.gif
+  html/Ocean.theme/synopsis.png
+  html/Pisces.std-theme/FontAwesome.ttf
+  html/Pisces.std-theme/Haskell.ttf
+  html/Pisces.std-theme/OpenSans-Bold.ttf
+  html/Pisces.std-theme/OpenSans-BoldItalic.ttf
+  html/Pisces.std-theme/OpenSans-Italic.ttf
+  html/Pisces.std-theme/OpenSans-Regular.ttf
+  html/Pisces.std-theme/pisces.css
+  html/Pisces.std-theme/LICENSE.txt
   latex/haddock.sty
 
 library

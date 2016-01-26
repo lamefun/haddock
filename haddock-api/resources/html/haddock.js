@@ -22,19 +22,19 @@ function initStyleMenu() {
   var buttons = styles.map(function(title) {
     return $("<li>").append(
       $("<a>", {href: "#"})
+        .text(title)
         .click(function() {
-            setActiveStyleSheet(title);
-            Cookies.set("haddock-style", title);
-            $("#style-menu").hide();
-          })
-        .text(title));
+          setActiveStyleSheet(title);
+          Cookies.set("haddock-style", title);
+          $("#style-menu").hide();
+        }));
   });
 
   if (buttons.length > 1) {
-    var holder = $("<div>", {id: "style-menu-holder"});
-    var menu = $("<ul>", {id: "style-menu"}).append(buttons).hide();
+    var holder = $("<div>", {class: "dropdown-holder"});
+    var menu = $("<ul>", {class: "dropdown-menu"}).append(buttons).hide();
     var menuItem =
-      $("<a>", {class: "dropdown", href: "#"})
+      $("<a>", {href: "#"})
         .click(function() { menu.slideToggle(200); })
         .text("Style");
     holder.append(menuItem, menu);
@@ -103,14 +103,185 @@ function initCollapsers() {
 }
 
 //------------------------------------------------------------------------------
+// Sidebar
+//------------------------------------------------------------------------------
+
+
+function initSidebarScrolling() {
+  $(".sidebar-tab-content").addClass("nano-content");
+  $(".sidebar-tab").addClass("nano").nanoScroller({
+    preventPageScrolling: true
+  });
+
+
+    /*
+  var $docContents = $("#sidebar-doc-contents");
+  var $pageContents = $("#sidebar-page-contents");
+
+  $docContents.nanoScroller();
+  $pageContents.nanoScroller();
+
+
+  $(window).resize(function() {
+    docContentsJsp.reinitialise();
+    pageContentsJsp.reinitialise();
+  });
+
+  var cookie = Cookies.getJSON("haddock-scroll");
+  if (cookie) {
+    if (typeof cookie.docContentsX == "number") {
+      docContentsJsp.scrollToPercentX(cookie.docContentsX);
+    }
+    if (typeof cookie.docContentsY == "number") {
+      docContentsJsp.scrollToPercentY(cookie.docContentsY);
+    }
+  }
+
+  $(window).unload(function() {
+    alert('Foo');
+    Cookies.set("haddock-scroll", {
+      docContentsX: docContentsJsp.getPercentScrolledX(),
+      docContentsY: docContentsJsp.getPercentScrolledY()
+    });
+  });
+  */
+}
+
+function initSidebarNav() {
+  $("<div>", {id: "sidebar-nav"}).insertAfter("#sidebar-header");
+}
+
+
+function initSidebarSearch() {
+  var SEARCH_PLACEHOLDER = "Search (press '/' to focus)";
+
+  var $searchEntry =
+    $("<input>", {id: "sidebar-search-entry",
+                  type: "text",
+                  class: "placeholder",
+                  value: SEARCH_PLACEHOLDER})
+      .focus(function() {
+        if ($(this).hasClass("placeholder")) {
+          $(this).removeClass("placeholder").val("");
+        }
+      })
+      .blur(function() {
+        if ($(this).val().match(/^\s*$/)) {
+          $(this).addClass("placeholder").val(SEARCH_PLACEHOLDER);
+        }
+      });
+
+  var $searchButton =
+    $("<button>", {id: "sidebar-search-button"}).append(
+      $("<span>", {class: "label"}).text("Search"));
+
+  var $searchBar =
+    $("<div>", {id: "sidebar-search-bar"}).append(
+      $("<div>", {id: "sidebar-search-panel"}).append(
+        $("<div>", {id: "sidebar-search-entry-wrapper"}).append(
+          $searchEntry
+        ),
+      $searchButton)
+    );
+
+  Mousetrap.bind("/", function() {
+    $searchEntry.focus();
+  });
+
+  $("#sidebar-nav").append($searchBar);
+}
+
+function initSidebarTabs() {
+  var $tabBar = $("<div>", {id: "sidebar-tab-bar"});
+
+  var possibleTabs = [
+    {name: "Pages",    id: "sidebar-pages-tab"},
+    {name: "Contents", id: "sidebar-contents-tab"}
+  ];
+
+  var activateLastTab;
+
+  possibleTabs.forEach(function(tab) {
+    var $tab = $(document.getElementById(tab.id));
+    if ($tab.length == 0) {
+      return;
+    }
+
+    var $button =
+      $("<button>", {id: tab.id + "-button", class: "sidebar-tab-button"})
+        .append($("<span>", {class: "button-label"}).text(tab.name));
+
+    var activate = function() {
+      if (!$button.hasClass("selected")) {
+        $(".sidebar-tab-button").removeClass("selected");
+        $(".sidebar-tab").hide();
+        $button.addClass("selected");
+        $tab.show();
+      }
+    };
+
+    $button.click(activate);
+    $tabBar.append($button);
+
+    activateLastTab = activate;
+  });
+
+  activateLastTab();
+
+  $("#sidebar-nav").append($tabBar);
+}
+
+function initSidebar() {
+  initSidebarScrolling();
+  initSidebarNav();
+  initSidebarSearch();
+  initSidebarTabs();
+}
+
+//------------------------------------------------------------------------------
+// Smooth scrolling
+//------------------------------------------------------------------------------
+
+function initSmoothAnchorScrolling() {
+  $("a").click(function() {
+    var hash = this.hash;
+    var target = null;
+    var targetDocument = document;
+    var targetWindow = window;
+
+    if (this.target == "_parent") {
+      targetDocument = parent.document;
+      targetWindow = parent.window;
+    }
+
+    if (hash.length > 0 && hash[0] == '#') {
+      target = targetDocument.getElementById(hash.substring(1));
+    }
+
+    if (target) {
+      $(targetDocument).find("html, body").animate({
+        scrollTop: $(target).offset().top
+      }, 250, function () {
+        targetWindow.location.hash = hash;
+      });
+      return false;
+    } else {
+      return true;
+    }
+  });
+}
+
+//------------------------------------------------------------------------------
 // Page initialization
 //------------------------------------------------------------------------------
 
 function initPage() {
-  $("body").addClass("has-javascript");
+  $("html").addClass("has-javascript");
   initStyleMenu();
   initStyle();
   initCollapsers();
+  initSmoothAnchorScrolling();
+  initSidebar();
 }
 
 //------------------------------------------------------------------------------

@@ -28,48 +28,51 @@ import Haddock.Doc (combineDocumentation, emptyMetaDoc,
                     metaDocAppend, metaConcat)
 
 import Text.XHtml hiding ( name, p, quote )
+import qualified Text.XHtml as H
 import Data.Maybe (fromMaybe)
 
 import GHC
 import Name
 
-parHtmlMarkup :: Qualification -> Bool
-              -> (Bool -> a -> Html) -> DocMarkup a Html
+parHtmlMarkup
+    :: Qualification -> Bool -> (Bool -> a -> Html) -> DocMarkup a Html
 parHtmlMarkup qual insertAnchors ppId = Markup {
-  markupEmpty                = noHtml,
-  markupString               = toHtml,
-  markupParagraph            = paragraph,
-  markupAppend               = (+++),
-  markupIdentifier           = thecode . ppId insertAnchors,
-  markupIdentifierUnchecked  = thecode . ppUncheckedLink qual,
-  markupModule               = \m -> let (mdl,ref) = break (=='#') m
-                                         -- Accomodate for old style
-                                         -- foo\#bar anchors
-                                         mdl' = case reverse mdl of
-                                           '\\':_ -> init mdl
-                                           _ -> mdl
-                                     in ppModuleRef (mkModuleName mdl') ref,
-  markupWarning              = thediv ! [theclass "warning"],
-  markupEmphasis             = emphasize,
-  markupBold                 = strong,
-  markupMonospaced           = thecode,
-  markupUnorderedList        = unordList,
-  markupOrderedList          = ordList,
-  markupDefList              = defList,
-  markupCodeBlock            = (pre ! [theclass "code-block"]) . thecode,
-  markupHyperlink            = \(Hyperlink url mLabel)
-                               -> if insertAnchors
-                                  then anchor ! [href url]
-                                       << fromMaybe url mLabel
-                                  else toHtml $ fromMaybe url mLabel,
-  markupAName                = \aname
-                               -> if insertAnchors
-                                  then namedAnchor aname << ""
-                                  else noHtml,
-  markupPic                  = \(Picture uri t) -> image ! ([src uri] ++ fromMaybe [] (return . title <$> t)),
-  markupProperty             = pre . toHtml,
-  markupExample              = examplesToHtml,
-  markupHeader               = \(Header l t) -> makeHeader l t
+    markupEmpty = noHtml,
+    markupString = toHtml,
+    markupParagraph = paragraph,
+    markupAppend = (+++),
+    markupIdentifier = \i ->
+      thecode ! [theclass "inline id"] << ppId insertAnchors i,
+    markupIdentifierUnchecked = \i ->
+      thecode ! [theclass "inline id unchecked"] << ppUncheckedLink qual i,
+    markupModule = \m ->
+      -- Accomodate for old style foo\#bar anchors
+      let (mdl, ref) = break (== '#') m
+          mdl' = case reverse mdl of
+            ('\\':_) -> init mdl
+            _        -> mdl
+      in ppModuleRef (mkModuleName mdl') ref,
+    markupWarning = thediv ! [theclass "warning"],
+    markupEmphasis = emphasize,
+    markupBold = strong,
+    markupMonospaced = thecode ! [theclass "inline"],
+    markupUnorderedList = unordList,
+    markupOrderedList = ordList,
+    markupDefList = defList,
+    markupCodeBlock = (pre ! [theclass "block"]) . thecode,
+    markupHyperlink = \(Hyperlink url mLabel) ->
+      if insertAnchors
+        then anchor ! [href url] << fromMaybe url mLabel
+        else toHtml (fromMaybe url mLabel),
+    markupAName = \aname ->
+      if insertAnchors
+        then namedAnchor aname << ""
+        else noHtml,
+    markupPic = \(Picture uri t) ->
+      image ! ([src uri] ++ fromMaybe [] (return . title <$> t)),
+    markupProperty = pre . toHtml,
+    markupExample = examplesToHtml,
+    markupHeader = \(Header l t) -> makeHeader l t
   }
   where
     makeHeader :: Int -> Html -> Html
@@ -79,16 +82,17 @@ parHtmlMarkup qual insertAnchors ppId = Markup {
     makeHeader 4 mkup = h4 mkup
     makeHeader 5 mkup = h5 mkup
     makeHeader 6 mkup = h6 mkup
-    makeHeader l _ = error $ "Somehow got a header level `" ++ show l ++ "' in DocMarkup!"
+    makeHeader l _ =
+      error ("Somehow got a header level `" ++ show l ++ "' in DocMarkup!")
 
+    examplesToHtml l =
+      H.pre ! [H.theclass "block screen"] << concatHtml (map exampleToHtml l)
 
-    examplesToHtml l = pre (concatHtml $ map exampleToHtml l) ! [theclass "screen"]
-
-    exampleToHtml (Example expression result) = htmlExample
-      where
-        htmlExample = htmlPrompt +++ htmlExpression +++ toHtml (unlines result)
-        htmlPrompt = (thecode . toHtml $ ">>> ") ! [theclass "prompt"]
-        htmlExpression = (strong . thecode . toHtml $ expression ++ "\n") ! [theclass "userinput"]
+    exampleToHtml (Example expression result) = toHtml [
+        H.thecode ! [H.theclass "prompt"] << ">>> ",
+        H.thecode ! [H.theclass "input"] << H.toHtml (expression ++ "\n"),
+        H.toHtml (unlines result)
+      ]
 
 -- | We use this intermediate type to transform the input 'Doc' tree
 -- in an arbitrary way before rendering, such as grouping some
@@ -217,8 +221,8 @@ rdrDocToHtml qual = markupHacked fmt Nothing . cleanup
 docElement :: (Html -> Html) -> Html -> Html
 docElement el content_ =
   if isNoHtml content_
-    then el ! [theclass "doc empty"] << spaceHtml
-    else el ! [theclass "doc"] << content_
+    then el ! [theclass "doc empty", lang "en"] << spaceHtml
+    else el ! [theclass "doc", lang "en"] << content_
 
 
 docSection :: Maybe Name -- ^ Name of the thing this doc is for

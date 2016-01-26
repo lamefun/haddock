@@ -10,22 +10,27 @@
 -- Stability   :  experimental
 -- Portability :  portable
 -----------------------------------------------------------------------------
+
 module Haddock.Backends.Xhtml.Types (
-  SourceURLs, WikiURLs,
+  SourceURLs,
+  WikiURLs,
   LinksInfo,
   Splice,
   Unicode,
 ) where
 
+--------------------------------------------------------------------------------
 
 import Data.Map
 import GHC
 
+--------------------------------------------------------------------------------
 
 -- the base, module and entity URLs for the source code and wiki links.
 type SourceURLs = (Maybe FilePath, Maybe FilePath, Map PackageKey FilePath, Map PackageKey FilePath)
 type WikiURLs = (Maybe FilePath, Maybe FilePath, Maybe FilePath)
 
+--------------------------------------------------------------------------------
 
 -- The URL for source and wiki links
 type LinksInfo = (SourceURLs, WikiURLs)
@@ -35,3 +40,5 @@ type Splice = Bool
 
 -- Whether unicode syntax is to be used
 type Unicode = Bool
+
+--------------------------------------------------------------------------------

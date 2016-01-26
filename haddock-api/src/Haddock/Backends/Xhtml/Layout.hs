@@ -11,23 +11,6 @@
 -- Portability :  portable
 -----------------------------------------------------------------------------
 module Haddock.Backends.Xhtml.Layout (
-  miniBody,
-
-  divPackageHeader,
-  divModuleHeader,
-  divModuleInfo,
-  divTableOfContents,
-  divDescription,
-  divSynposis,
-  divInterface,
-  divIndex,
-  divAlphabet,
-  divModuleList,
-  divFooter,
-
-  sectionName,
-  nonEmptySectionName,
-
   shortDeclList,
   shortSubDecls,
 
@@ -54,51 +37,10 @@ import Haddock.Types
 import Haddock.Utils (makeAnchorId)
 import qualified Data.Map as Map
 import Text.XHtml hiding ( name, title, p, quote )
+import qualified Text.XHtml as H
 
 import FastString            ( unpackFS )
 import GHC
-
---------------------------------------------------------------------------------
--- * Sections of the document
---------------------------------------------------------------------------------
-
-
-miniBody :: Html -> Html
-miniBody = body ! [identifier "mini"]
-
-
-sectionDiv :: String -> Html -> Html
-sectionDiv i = thediv ! [theclass "section", identifier i]
-
-
-sectionName :: Html -> Html
-sectionName = paragraph ! [theclass "caption"]
-
-
--- | Make an element that always has at least something (a non-breaking space).
--- If it would have otherwise been empty, then give it the class ".empty".
-nonEmptySectionName :: Html -> Html
-nonEmptySectionName c
-  | isNoHtml c = paragraph ! [theclass "caption empty"] $ spaceHtml
-  | otherwise  = paragraph ! [theclass "caption"]       $ c
-
-
-divPackageHeader, divModuleHeader, divModuleInfo, divFooter,
-  divTableOfContents, divDescription, divSynposis, divInterface,
-  divIndex, divAlphabet, divModuleList
-    :: Html -> Html
-
-divPackageHeader   = sectionDiv "package-header"
-divModuleHeader    = sectionDiv "module-header"
-divModuleInfo      = sectionDiv "module-info"
-divTableOfContents = sectionDiv "table-of-contents"
-divDescription     = sectionDiv "description"
-divSynposis        = sectionDiv "synopsis"
-divInterface       = sectionDiv "interface"
-divIndex           = sectionDiv "index"
-divAlphabet        = sectionDiv "alphabet"
-divModuleList      = sectionDiv "module-list"
-divFooter          = sectionDiv "footer"
 
 --------------------------------------------------------------------------------
 -- * Declaration containers
@@ -129,7 +71,7 @@ divSubDecls cssClass captionName = maybe noHtml wrap
   where
     wrap = (subSection <<) . (subCaption +++)
     subSection = thediv ! [theclass $ unwords ["subs", cssClass]]
-    subCaption = paragraph ! [theclass "caption"] << captionName
+    subCaption = h4 << captionName
 
 
 subDlist :: Qualification -> [SubDecl] -> Maybe Html
@@ -139,7 +81,8 @@ subDlist qual decls = Just $ ulist << map subEntry decls
     subEntry (decl, mdoc, subs) =
       li <<
         (define ! [theclass "src"] << decl +++
-         docElement thediv << (fmap (docToHtml Nothing qual) mdoc +++ subs))
+         docElement thediv << (fmap (docToHtml Nothing qual) mdoc) +++
+         subs)
 
 
 subTable :: Qualification -> [SubDecl] -> Maybe Html
@@ -183,7 +126,7 @@ subAssociatedTypes = divSubDecls "associated-types" "Associated Types" . subBloc
 
 
 subConstructors :: Qualification -> [SubDecl] -> Html
-subConstructors qual = divSubDecls "constructors" "Constructors" . subTable qual
+subConstructors qual = divSubDecls "constructors" "Constructors" . subDlist qual
 
 
 subFields :: Qualification -> [SubDecl] -> Html
@@ -204,10 +147,10 @@ subInstances qual nm lnks splice = maybe noHtml wrap . instTable
     wrap = (subSection <<) . (subCaption +++)
     instTable = fmap (thediv ! collapseSection id_ True [] <<) . subTableSrc qual lnks splice
     subSection = thediv ! [theclass "subs instances"]
-    subCaption = paragraph ! collapseControl id_ True "caption" << "Instances"
+    subCaption = h4 ! collapseControl id_ True "caption" << "Instances"
     id_ = makeAnchorId $ "i:" ++ nm
 
- 
+
 subInstHead :: String -- ^ Instance unique id (for anchor generation)
             -> Html -- ^ Header content (instance name and type)
             -> Html
